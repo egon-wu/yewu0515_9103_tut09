@@ -26,7 +26,3 @@ To bring the abstraction to life, I will use **poseNet body-tracking in p5.js** 
 - Code: [ASCII Image Example on p5.js Editor](https://editor.p5js.org/aaronmt/sketches/EeAIM5LOp)  
 - Screenshot:  
   ![ASCII Effect](https://i.ytimg.com/vi/4IyeLc6J1Uo/maxresdefault.jpg)
-
-### 📝 Commit Label: `Quiz 8`
-
-Push this file to your GitHub repository as `README.md`, commit with the label above, and submit the repository link as instructed.
