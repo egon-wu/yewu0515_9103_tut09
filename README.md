@@ -14,7 +14,8 @@ To bring the abstraction to life, I will use **poseNet body-tracking in p5.js** 
 
 ### Main Technique: poseNet + abstract form mapping
 - Link: [poseNet Creative Sketches – perthirtysix.com](https://perthirtysix.com/explore-creative-coding-with-30-p5js-sketches)  
-
+- Screenshot:
+  ![alt text](assets/3561746720903_.pic.jpg)
 ### Additional Inspiration: Scanner Effect
 - Link: [YouTube – Easy Generative Art and Scanner Effect](https://www.youtube.com/watch?v=zJnSwHnYLhs)  
 - Code: [GitHub – scan-art](https://github.com/kenjihiranabe/scan-art)  
@@ -26,3 +27,4 @@ To bring the abstraction to life, I will use **poseNet body-tracking in p5.js** 
 - Code: [ASCII Image Example on p5.js Editor](https://editor.p5js.org/aaronmt/sketches/EeAIM5LOp)  
 - Screenshot:  
   ![ASCII Effect](https://i.ytimg.com/vi/4IyeLc6J1Uo/maxresdefault.jpg)
+  
