@@ -62,12 +62,12 @@ These sketches gave me insight into how to use noise fields to drive visual feed
 - I referenced public sketches and tutorials for conceptual inspiration, but wrote the ripple and flicker logic myself.
 - Mouse ripple triggering and brush stroke generation are adapted from my own experimentation.
 
-## How to Run the Sketch
+## How to View & Interact with the Sketch
 
 Just open the `index.html` file in any browser.
 
 Or clone and run locally:
 ```bash
-git clone https://github.com/your-username/ascii-cow-perlin.git
+git clone https://github.com/egon-wu/yewu0515_9103_tut09.git
 cd ascii-cow-perlin
 open index.html
