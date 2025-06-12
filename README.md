@@ -1,4 +1,6 @@
 # ASCII Cow Animation — Perlin Noise & Randomness Version
+# Creative coding major project
+# yewu0515_9103_tut09
 
 ## Introduction
 This project is a Perlin-noise-driven animated reinterpretation of a group-coded ASCII cow visualization, built using [p5.js](https://p5js.org/). The base structure comes from our team’s collaborative artwork — a polygonal cow rendered with rough outlines, animated legs, and an impasto-style procedural background.
