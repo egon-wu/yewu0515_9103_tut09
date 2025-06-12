@@ -35,7 +35,7 @@ I focused on **Perlin noise** and **randomness** to drive all animated aspects o
 My visual choices were heavily influenced by the artwork:
 
 **Elaine de Kooning - _Untitled (Bull)_**  
-📁 ![Reference artwork: Untitled (Bull) by Elaine de Kooning](assets/untitled-bull- Elaine de Kooning.jpeg)
+![Reference artwork: Untitled (Bull) by Elaine de Kooning](assets/untitled_bull_elaine.jpeg)
 
 The bold gestures, abstract line contours, and raw texture in de Kooning’s work inspired the rough polygonal rendering of the cow and the expressive ASCII + brushstroke visual style.
 
