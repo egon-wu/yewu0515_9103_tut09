@@ -72,6 +72,14 @@ function draw() {
 
   time += 0.06;
   ripples = ripples.filter(r => time - r.startTime < 2.0);
+
+  // 🖱️ 白色鼠标圆点（如果鼠标在画布中）
+  if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+    noStroke();
+    fill(255, 200); // 白色，带透明度
+    ellipse(mouseX, mouseY, 24, 24); // 稍大一点的圆形
+  }
+  
 }
 
 // =================================================================
@@ -99,7 +107,7 @@ function createGrainTexture(graphics) {
 // 🐄 牛的绘制逻辑 (使用您喜欢的 drawRoughPolygon)
 function drawCow() {
   const animSpeed = 0.05;
-  const animAmplitude = 0.1;
+  const animAmplitude = 0.2;//move quciker
   let swingAngle = sin(frameCount * animSpeed) * animAmplitude;
   const pivot1 = createVector(610, 370), pivot2 = createVector(500, 395), pivot3 = createVector(350, 440), pivot4 = createVector(160, 420);
 
@@ -128,15 +136,7 @@ function drawCow() {
   drawRoughPolygon(horn1, 0, '#FFFFFF', 10);
   drawRoughPolygon(horn2, 0, '#F5F5F5', 10);
 }
-/*
-// don't need the mouse crz i want to focus on perlin noise more than user input
-function mousePressed() {
-  ripples.push({
-    x: mouseX,
-    y: mouseY,
-    startTime: time
-  });
-}*/
+
 
 
 // 您喜欢的“粗糙轮廓”函数
@@ -177,10 +177,10 @@ function generateASCIILayer() {
   asciiTexture.textAlign(CENTER, CENTER);
   asciiTexture.textSize(cellW * 0.75);
 
-  asciiTexture.textFont('monospace'); // ✅ 使用等宽字体
-  asciiTexture.stroke(255);           // ✅ 描边白色
-  asciiTexture.strokeWeight(1.2);     // ✅ 加粗字体
-  asciiTexture.fill(255);             // ✅ 字体填充白色
+  asciiTexture.textFont('monospace'); 
+  asciiTexture.stroke(255);           
+  asciiTexture.strokeWeight(1.2);    
+  asciiTexture.fill(255);            
 
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
@@ -213,6 +213,14 @@ function drawMaskedTexture(texture, polygonVertices) {
 }
 
 
+function mousePressed() {
+  ripples.push({
+    x: mouseX,
+    y: mouseY,
+    startTime: time
+  });
+}
+
 // 程序化油画背景生成函数
 const noiseScale = 0.003;
 const colours = [ "#fccace", "#bcbdf5", "#f5ce20", "#f56020", "#003366", "#6699cc"];
@@ -243,62 +251,61 @@ function createImpastoBG() {
 
 
 // 浏览器窗口响应式调整
-function updateCanvasScale() { 
-    const scaleFactor = Math.min(windowWidth / BASE_WIDTH, windowHeight / BASE_HEIGHT) * 0.95; 
-    const canvasEl = document.querySelector('canvas');
-    canvasEl.style.transform = `scale(${scaleFactor})`;
-    canvasEl.style.position = 'absolute';
-    canvasEl.style.left = `calc(50% - ${BASE_WIDTH * scaleFactor / 2}px)`;
-    canvasEl.style.top = `calc(50% - ${BASE_HEIGHT * scaleFactor / 2}px)`;
+function updateCanvasScale() {
+  const canvasEl = document.querySelector('canvas');
+  const scaleFactor = Math.min(windowWidth / BASE_WIDTH, windowHeight / BASE_HEIGHT);
+
+  // 设置 canvas 元素大小
+  resizeCanvas(BASE_WIDTH, BASE_HEIGHT); // 可选：强制固定 base 尺寸
+  canvasEl.style.width = `${BASE_WIDTH * scaleFactor}px`;
+  canvasEl.style.height = `${BASE_HEIGHT * scaleFactor}px`;
+
+  // 居中定位
+  canvasEl.style.position = 'absolute';
+  canvasEl.style.left = `calc(50% - ${BASE_WIDTH * scaleFactor / 2}px)`;
+  canvasEl.style.top = `calc(50% - ${BASE_HEIGHT * scaleFactor / 2}px)`;
 }
 
 function updateWaterRipple() {
-  let disp = createImage(width, height);
+  const scaleFactor = 0.2;
+  const w = floor(width * scaleFactor);
+  const h = floor(height * scaleFactor);
+
+  let disp = createImage(w, h);
   disp.loadPixels();
   bg.loadPixels();
 
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      let idx = (x + y * width) * 4;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      let idx = (x + y * w) * 4;
 
-      // Perlin 噪声基本扰动
-      let n = noise(x * 0.01, y * 0.01, time * 0.2);
-      let offsetX = map(n, 0, 1, -30, 30);
-      let offsetY = map(n, 0, 1, -30, 30);
+      let gx = x / scaleFactor;
+      let gy = y / scaleFactor;
 
-      // mouse interavtive don't needed
-      
-      let dx1 = x - mouseX;
-      let dy1 = y - mouseY;
-      let distSq = dx1 * dx1 + dy1 * dy1;
-      let maxDist = 200 * 200;
-      if (distSq < maxDist) {
-        let d = sqrt(distSq);
-        let strength = map(d, 0, sqrt(maxDist), 15, 0);
-        offsetX += cos(time * 5 + d * 0.1) * strength;
-        offsetY += sin(time * 5 + d * 0.1) * strength;
-      }
+      let n = noise(gx * 0.01, gy * 0.01, time * 0.2);
+      let offsetX = map(n, 0, 1, -15, 15);
+      let offsetY = map(n, 0, 1, -15, 15);
 
-      // 点击水波扰动
+      // 水波扰动
       for (let ripple of ripples) {
-        let dx = x - ripple.x;
-        let dy = y - ripple.y;
+        let dx = gx - ripple.x;
+        let dy = gy - ripple.y;
         let d = sqrt(dx * dx + dy * dy);
         let waveRadius = (time - ripple.startTime) * 250;
         let waveWidth = 50;
         if (abs(d - waveRadius) < waveWidth) {
-          let strength = map(abs(d - waveRadius), 0, waveWidth, 30, 0);
+          let strength = map(abs(d - waveRadius), 0, waveWidth, 15, 0);
           let angle = atan2(dy, dx);
           offsetX += cos(angle) * strength;
           offsetY += sin(angle) * strength;
         }
       }
 
-      let sx = constrain(x + offsetX, 0, width - 1);
-      let sy = constrain(y + offsetY, 0, width - 1);
-      let sidx = (floor(sx) + floor(sy) * width) * 4;
+      let sx = constrain(floor(gx + offsetX), 0, width - 1);
+      let sy = constrain(floor(gy + offsetY), 0, height - 1);
+      let sidx = (sx + sy * width) * 4;
 
-      disp.pixels[idx    ] = bg.pixels[sidx    ];
+      disp.pixels[idx]     = bg.pixels[sidx];
       disp.pixels[idx + 1] = bg.pixels[sidx + 1];
       disp.pixels[idx + 2] = bg.pixels[sidx + 2];
       disp.pixels[idx + 3] = 255;
@@ -306,7 +313,7 @@ function updateWaterRipple() {
   }
 
   disp.updatePixels();
-  image(disp, 0, 0);
+  image(disp, 0, 0, width, height); // ✅ 放大渲染
 }
 
 
