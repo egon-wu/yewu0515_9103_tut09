@@ -64,10 +64,9 @@ These sketches gave me insight into how to use noise fields to drive visual feed
 
 ## How to View & Interact with the Sketch
 
-Just open the `index.html` file in any browser.
+To run the animation locally:
 
-Or clone and run locally:
 ```bash
 git clone https://github.com/egon-wu/yewu0515_9103_tut09.git
-cd ascii-cow-perlin
+cd yewu0515_9103_tut09
 open index.html
