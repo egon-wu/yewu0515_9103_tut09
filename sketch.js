@@ -4,6 +4,9 @@
 const BASE_WIDTH = 840;
 const BASE_HEIGHT = 620;
 
+const asciiChar = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,^`'. ";
+let asciiTexture;
+
 let ripples = []; // 存储水波纹信息
 let time = 0;     // 用于驱动动画（参考中的 time）
 
@@ -46,6 +49,8 @@ function setup() {
   leg4 = [ createVector(175,466), createVector(143,495), createVector(143,495), createVector(119,500), createVector(125,501), createVector(108,533), createVector(93,582), createVector(73,583), createVector(59,587), createVector(37,568), createVector(82,500), createVector(81,480), createVector(143,410), ];
   horn1 = [ createVector(668,169), createVector(685,190), createVector(729,183), ];
   horn2 = [ createVector(488,128), createVector(506,143), createVector(622,125), ];
+
+  asciiTexture = createGraphics(BASE_WIDTH, BASE_HEIGHT); // ✅ 创建空的ASCII画布
 }
 
 // =================================================================
@@ -53,6 +58,7 @@ function setup() {
 // =================================================================
 function draw() {
   updateWaterRipple();  // 背景动态扰动
+  generateASCIILayer(); // ✅ 每一帧都更新字符图层
   drawCow();            // 牛照常绘制
 
   // ⏱️ 每隔2秒添加一个随机水波涟漪
@@ -97,11 +103,28 @@ function drawCow() {
   let swingAngle = sin(frameCount * animSpeed) * animAmplitude;
   const pivot1 = createVector(610, 370), pivot2 = createVector(500, 395), pivot3 = createVector(350, 440), pivot4 = createVector(160, 420);
 
-  drawRoughPolygon(body, 1, '#1a1a1a', 14);
-  push(); translate(pivot1.x, pivot1.y); rotate(swingAngle); translate(-pivot1.x, -pivot1.y); drawRoughPolygon(leg1, 1, '#1a1a1a', 14); pop();
-  push(); translate(pivot3.x, pivot3.y); rotate(swingAngle); translate(-pivot3.x, -pivot3.y); drawRoughPolygon(leg3, 1, '#1a1a1a', 14); pop();
-  push(); translate(pivot2.x, pivot2.y); rotate(-swingAngle); translate(-pivot2.x, -pivot2.y); drawRoughPolygon(leg2, 1, '#1a1a1a', 14); pop();
-  push(); translate(pivot4.x, pivot4.y); rotate(-swingAngle); translate(-pivot4.x, -pivot4.y); drawRoughPolygon(leg4, 1, '#1a1a1a', 14); pop();
+  drawMaskedTexture(asciiTexture, body);
+
+  push();
+  translate(pivot1.x, pivot1.y); rotate(swingAngle); translate(-pivot1.x, -pivot1.y);
+  drawMaskedTexture(asciiTexture, leg1);
+  pop();
+
+  push();
+  translate(pivot3.x, pivot3.y); rotate(swingAngle); translate(-pivot3.x, -pivot3.y);
+  drawMaskedTexture(asciiTexture, leg3);
+  pop();
+
+  push();
+  translate(pivot2.x, pivot2.y); rotate(-swingAngle); translate(-pivot2.x, -pivot2.y);
+  drawMaskedTexture(asciiTexture, leg2);
+  pop();
+
+  push();
+  translate(pivot4.x, pivot4.y); rotate(-swingAngle); translate(-pivot4.x, -pivot4.y);
+  drawMaskedTexture(asciiTexture, leg4);
+  pop();
+
   drawRoughPolygon(horn1, 0, '#FFFFFF', 10);
   drawRoughPolygon(horn2, 0, '#F5F5F5', 10);
 }
@@ -142,6 +165,51 @@ function drawRoughPolygon(polygonVertices, jitter = 8, fillCol = '#dbb277', step
     vertex(v.x, v.y);
   }
   endShape(CLOSE);
+}
+
+function generateASCIILayer() {
+  const cols = 80;
+  const rows = 60;
+  const cellW = BASE_WIDTH / cols;
+  const cellH = BASE_HEIGHT / rows;
+
+  asciiTexture.clear();
+  asciiTexture.textAlign(CENTER, CENTER);
+  asciiTexture.textSize(cellW * 0.75);
+
+  asciiTexture.textFont('monospace'); // ✅ 使用等宽字体
+  asciiTexture.stroke(255);           // ✅ 描边白色
+  asciiTexture.strokeWeight(1.2);     // ✅ 加粗字体
+  asciiTexture.fill(255);             // ✅ 字体填充白色
+
+  for (let j = 0; j < rows; j++) {
+    for (let i = 0; i < cols; i++) {
+      const n = noise(i * 0.3, j * 0.3, frameCount * 0.02);
+      const flicker = random();
+      const brightness = (n + flicker * 0.5) / 1.5;
+      const index = floor(map(brightness, 0, 1, 0, asciiChar.length));
+      const c = asciiChar.charAt(index);
+      const x = i * cellW + cellW / 2;
+      const y = j * cellH + cellH / 2;
+      asciiTexture.text(c, x, y);
+    }
+  }
+}
+
+function drawMaskedTexture(texture, polygonVertices) {
+  let mask = createGraphics(BASE_WIDTH, BASE_HEIGHT);
+  mask.noStroke();
+  mask.fill(255);
+  mask.beginShape();
+  for (let v of polygonVertices) {
+    mask.vertex(v.x, v.y);
+  }
+  mask.endShape(CLOSE);
+
+  let masked = createImage(BASE_WIDTH, BASE_HEIGHT);
+  masked.copy(texture, 0, 0, BASE_WIDTH, BASE_HEIGHT, 0, 0, BASE_WIDTH, BASE_HEIGHT);
+  masked.mask(mask);
+  image(masked, 0, 0);
 }
 
 
