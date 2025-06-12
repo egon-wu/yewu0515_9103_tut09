@@ -16,7 +16,6 @@ let textureOverlay;  // Grain texture overlay applied on top of the canvas
 // Arrays of vectors defining cow body parts
 let body, leg1, leg2, leg3, leg4, horn1, horn2;
 
-
 // =================================================================
 // Core Setup Function (setup)
 // =================================================================

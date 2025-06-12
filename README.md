@@ -3,59 +3,68 @@
 # yewu0515_9103_tut09
 
 ## Introduction
-This project is a Perlin-noise-driven animated reinterpretation of a group-coded ASCII cow visualization, built using [p5.js](https://p5js.org/). The base structure comes from our team’s collaborative artwork — a polygonal cow rendered with rough outlines, animated legs, and an impasto-style procedural background.
+This project is my personal reinterpretation of our group-coded ASCII cow visualization using **Perlin noise** and **randomness** as the core animation drivers. It is built with [p5.js](https://p5js.org/) and takes inspiration from the abstract artwork **"Untitled (Bull)" by Elaine de Kooning**, which I selected at the beginning of the assignment.
 
 ## How to Interact
-- Load the page, and the animation will start automatically.
-- The background and cow texture will ripple and shimmer dynamically using Perlin noise and randomness.
-- No mouse or keyboard input is required for animation to function.
+- Move your mouse over the canvas: the ripple effect reacts to mouse position and triggers wave-like disturbances.
+- No keyboard input is required.
+- The animation starts automatically when the page loads and continuously evolves using noise and random values.
 
-## Individual Animation Approach
+## My Animation Approach
 
-### Driver Used
-**Perlin noise and randomness**
+### Technique I Chose
+I focused on **Perlin noise** and **randomness** to drive all animated aspects of my sketch. These techniques allow for natural, organic movement and unpredictable visual textures.
 
-### Animated Elements and Behaviors
+### What I Animated
 
-| Component           | Technique              | Behavior Description |
-|---------------------|------------------------|-----------------------|
-| Background canvas   | `noise()` and `random()` | Distorted via time-evolving Perlin displacement with ripple overlay |
-| ASCII texture layer | `noise()` + flicker     | Characters dynamically change brightness and form a shifting texture |
-| Cow motion          | `sin(frameCount)`       | Legs sway slightly to preserve original motion from group code |
-| Brush stroke base   | Random stroke generation| Each page load renders a unique oil paint texture using noise-based direction and palette sampling |
+| Component             | Technique                    | Behavior Description |
+|-----------------------|------------------------------|-----------------------|
+| Background canvas     | `noise()` + wave distortion  | Fluid ripple animation with Perlin-based offsets and mouse-triggered wave bursts |
+| ASCII texture layer   | `noise()` + `random()`       | Each character flickers and changes brightness over time, forming a shifting ASCII surface |
+| Cow motion            | `sin(frameCount)` oscillation| The legs gently swing using sinusoidal animation |
+| Brush stroke texture  | Random angle + color sampling| Simulates the look of an oil painting with stroke direction from noise and palette sampling |
+| Mouse interaction     | Mouse position               | Triggers ripple effects that distort the canvas dynamically |
 
-### Distinction from Group Members
-- Other group members chose **time**, **sound**, or **interaction**; I used **Perlin noise + seeded randomness**.
-- This version focuses on **unpredictability and ambient texture movement** rather than interactivity or timed events.
-- My animation emphasizes **complex spatial variation**, especially in ripple and ASCII character distortion.
+### How My Version Differs
+- I did not use sound, time events, or keyboard input.
+- My work relies entirely on **Perlin noise**, `random()`, and **mouse interaction** to produce a rich and unpredictable animated canvas.
+- The animation emphasizes spatial texture and ripple distortion instead of narrative or synchronized timing.
 
-## References and Inspirations
+## Artwork Reference
 
-- [ASCII rain using Perlin noise – YouTube](https://www.youtube.com/watch?v=4IyeLc6J1Uo)  
-- [ASCII noise grid flicker by pattvira](https://editor.p5js.org/pattvira/sketches/pdK2ZxNSe)  
-- [Flow fields and Perlin distortion – YouTube](https://www.youtube.com/watch?v=zJnSwHnYLhs)  
+My visual choices were heavily influenced by the artwork:
+
+**Elaine de Kooning - _Untitled (Bull)_**  
+📁 Reference image located at: `assets/untitled-bull- Elaine de Kooning.jpeg`
+
+The bold gestures, abstract line contours, and raw texture in de Kooning’s work inspired the rough polygonal rendering of the cow and the expressive ASCII + brushstroke visual style.
+
+## Technical Overview
+
+- `generateASCIILayer()` maps a grid of Perlin-noise-based brightness to ASCII characters, with flickering from `random()`.
+- `updateWaterRipple()` uses both noise fields and expanding wave calculations triggered by `mousePressed()`.
+- `drawMaskedTexture()` masks each ASCII texture into the cow’s body parts.
+- `createImpastoBG()` lays down brush strokes in randomized directions and colors, modulated by Perlin noise.
+
+## External Sources and Inspiration
+
+- [ASCII rain using Perlin noise – YouTube](https://www.youtube.com/watch?v=4IyeLc6J1Uo)
+- [ASCII noise grid flicker by pattvira](https://editor.p5js.org/pattvira/sketches/pdK2ZxNSe)
+- [Flow fields and Perlin distortion – YouTube](https://www.youtube.com/watch?v=zJnSwHnYLhs)
 - [p5.js distortion overlay by BarneyCodes](https://editor.p5js.org/BarneyCodes/sketches/SHWPGoc-V)
 
-These references inspired the way I integrated noise-driven distortion and mapped it to visual elements such as text layers and pixel displacement.
+These sketches gave me insight into how to use noise fields to drive visual feedback and how to generate layered distortions with simple noise and random math.
 
-## Technical Explanation
+## Tools and Techniques
+- I only used `p5.js` and `p5.sound.js`.
+- I referenced public sketches and tutorials for conceptual inspiration, but wrote the ripple and flicker logic myself.
+- Mouse ripple triggering and brush stroke generation are adapted from my own experimentation.
 
-- `generateASCIILayer()` creates an ASCII grid where each cell uses noise brightness and a flicker factor to select a character.
-- `updateWaterRipple()` applies Perlin noise displacement plus expanding circular wave forces from mouse or timed triggers.
-- `drawMaskedTexture()` ensures the ASCII layer is clipped to body part shapes using an alpha mask.
-- `createImpastoBG()` uses seeded noise and randomness to simulate paint strokes with spatial coherence.
+## How to Run the Sketch
 
-## External Techniques or Tools
+Just open the `index.html` file in any browser.
 
-- I used only `p5.js` and `p5.sound.js`, plus general JavaScript and built-in noise/random APIs.
-- Ripple effect was influenced by open source sketches and tutorials, but implemented manually in this project.
-- References were adapted for educational purposes and all linked in this document.
-
-## Running the Sketch
-
-You can open the `index.html` file directly in a browser to run the project.
-
-To clone and view via local server:
+Or clone and run locally:
 ```bash
 git clone https://github.com/your-username/ascii-cow-perlin.git
 cd ascii-cow-perlin
