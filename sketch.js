@@ -105,6 +105,7 @@ function drawCow() {
   drawRoughPolygon(horn1, 0, '#FFFFFF', 10);
   drawRoughPolygon(horn2, 0, '#F5F5F5', 10);
 }
+/*
 // don't need the mouse crz i want to focus on perlin noise more than user input
 function mousePressed() {
   ripples.push({
@@ -112,7 +113,7 @@ function mousePressed() {
     y: mouseY,
     startTime: time
   });
-}
+}*/
 
 
 // 您喜欢的“粗糙轮廓”函数
@@ -148,22 +149,26 @@ function drawRoughPolygon(polygonVertices, jitter = 8, fillCol = '#dbb277', step
 const noiseScale = 0.003;
 const colours = [ "#fccace", "#bcbdf5", "#f5ce20", "#f56020", "#003366", "#6699cc"];
 function createImpastoBG() {
-  const numStrokes = 80000;
-  const strokeLength = 12;
+  const numStrokes = 50000;        // 油画笔触数量
+  const strokeLength = 12;         // 每笔长度
   for (let i = 0; i < numStrokes; i++) {
     let x = random(width);
     let y = random(height);
-    const n = noise(x * noiseScale, y * noiseScale);
-    const numBands = 16;
-    const band = int(n * numBands);
-    const colourIndex = band % colours.length;
-    const dabColor = colours[colourIndex];
+
+    // 🎨 颜色：完全随机从色板中抽取
+    const dabColor = random(colours);
     bg.stroke(dabColor);
-    bg.strokeWeight(random(1, 2.5));
-    let angleNoise = noise(x * noiseScale * 0.5, y * noiseScale * 0.5, 10);
-    let angle = map(angleNoise, 0, 1, 0, TWO_PI * 2);
+    
+    // 🖌️ 粗细更浮动
+    bg.strokeWeight(random(0.8, 3.5));
+
+    // 🌀 更复杂的角度扰动（引入时间和随机因子）
+    let angleNoise = noise(x * noiseScale * 0.5, y * noiseScale * 0.5, time * 0.1 + random(1000));
+    let angle = map(angleNoise, 0, 1, 0, TWO_PI * 4);  // 扰动范围扩大到 4 圈
+
     let px = x + cos(angle) * strokeLength;
     let py = y + sin(angle) * strokeLength;
+
     bg.line(x, y, px, py);
   }
 }
