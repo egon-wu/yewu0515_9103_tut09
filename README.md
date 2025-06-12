@@ -1,30 +1,60 @@
-# Quiz 8 – Imaging and Coding Technique Research
-# yewu0515_9103_tut09
+# ASCII Cow Animation — Perlin Noise & Randomness Version
 
-## Part 1: Imaging Technique Inspiration
-My assignment is inspired by Elaine de Kooning's Untitled Bull, and I am drawn to the bold, segmented color blocking techniques in Andy Warhol's Do It Yourself (Violin) and Roy Lichtenstein's Bull III. I plan to incorporate flat color blocks, simplified outlines, and clear geometric segmentation, as well as polka dot art, into my p5.js version of the bull. This technique helps transform expressive painterly forms into abstract, programmable visuals, making it ideal for generative art. I think the strongly abstract aesthetic of Pop Art offers a structured and visually striking alternative to code-based reinterpretations.
-## An image of Do It Yourself (Violin)
-![An image of Do It Yourself (Violin)](https://d7hftxdivxxvm.cloudfront.net/?height=602&quality=50&resize_to=fit&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FBubkJZdfkKyN8nagQ7LW6g%2Fnormalized.jpg&width=800)
-## An image of Bull III
-![An image of Bull III](https://media.nga.gov/iiif/49e4c263-5e1c-4cae-9fca-a41176e7e424/full/!588,600/0/default.jpg)
+## Introduction
+This project is a Perlin-noise-driven animated reinterpretation of a group-coded ASCII cow visualization, built using [p5.js](https://p5js.org/). The base structure comes from our team’s collaborative artwork — a polygonal cow rendered with rough outlines, animated legs, and an impasto-style procedural background.
 
-## Part 2: Coding Technique Exploration
+## How to Interact
+- Load the page, and the animation will start automatically.
+- The background and cow texture will ripple and shimmer dynamically using Perlin noise and randomness.
+- No mouse or keyboard input is required for animation to function.
 
-To bring the abstraction to life, I will use **poseNet body-tracking in p5.js** to allow user motion to deform and recompose the abstract bull form. This interactive approach brings energy and participation, echoing the playfulness of pop art. I'm also inspired by **scanner-style wave distortion** and **ASCII symbol rendering**, which offer alternative ways to abstract visual forms.
+## Individual Animation Approach
 
-### Main Technique: poseNet + abstract form mapping
-- Link: [poseNet Creative Sketches – perthirtysix.com](https://perthirtysix.com/explore-creative-coding-with-30-p5js-sketches)  
-- Screenshot:
-  ![alt text](assets/3561746720903_.pic.jpg)
-### Additional Inspiration: Scanner Effect
-- Link: [YouTube – Easy Generative Art and Scanner Effect](https://www.youtube.com/watch?v=zJnSwHnYLhs)  
-- Code: [GitHub – scan-art](https://github.com/kenjihiranabe/scan-art)  
-- Screenshot:  
-  ![Scanner Effect](https://i.ytimg.com/vi/zJnSwHnYLhs/maxresdefault.jpg)
+### Driver Used
+**Perlin noise and randomness**
 
-### Additional Inspiration: ASCII Art Rendering
-- Link: [YouTube – ASCII Text Images and Videos](https://www.youtube.com/watch?v=4IyeLc6J1Uo)  
-- Code: [ASCII Image Example on p5.js Editor](https://editor.p5js.org/aaronmt/sketches/EeAIM5LOp)  
-- Screenshot:  
-  ![ASCII Effect](https://i.ytimg.com/vi/4IyeLc6J1Uo/maxresdefault.jpg)
-  
+### Animated Elements and Behaviors
+
+| Component           | Technique              | Behavior Description |
+|---------------------|------------------------|-----------------------|
+| Background canvas   | `noise()` and `random()` | Distorted via time-evolving Perlin displacement with ripple overlay |
+| ASCII texture layer | `noise()` + flicker     | Characters dynamically change brightness and form a shifting texture |
+| Cow motion          | `sin(frameCount)`       | Legs sway slightly to preserve original motion from group code |
+| Brush stroke base   | Random stroke generation| Each page load renders a unique oil paint texture using noise-based direction and palette sampling |
+
+### Distinction from Group Members
+- Other group members chose **time**, **sound**, or **interaction**; I used **Perlin noise + seeded randomness**.
+- This version focuses on **unpredictability and ambient texture movement** rather than interactivity or timed events.
+- My animation emphasizes **complex spatial variation**, especially in ripple and ASCII character distortion.
+
+## References and Inspirations
+
+- [ASCII rain using Perlin noise – YouTube](https://www.youtube.com/watch?v=4IyeLc6J1Uo)  
+- [ASCII noise grid flicker by pattvira](https://editor.p5js.org/pattvira/sketches/pdK2ZxNSe)  
+- [Flow fields and Perlin distortion – YouTube](https://www.youtube.com/watch?v=zJnSwHnYLhs)  
+- [p5.js distortion overlay by BarneyCodes](https://editor.p5js.org/BarneyCodes/sketches/SHWPGoc-V)
+
+These references inspired the way I integrated noise-driven distortion and mapped it to visual elements such as text layers and pixel displacement.
+
+## Technical Explanation
+
+- `generateASCIILayer()` creates an ASCII grid where each cell uses noise brightness and a flicker factor to select a character.
+- `updateWaterRipple()` applies Perlin noise displacement plus expanding circular wave forces from mouse or timed triggers.
+- `drawMaskedTexture()` ensures the ASCII layer is clipped to body part shapes using an alpha mask.
+- `createImpastoBG()` uses seeded noise and randomness to simulate paint strokes with spatial coherence.
+
+## External Techniques or Tools
+
+- I used only `p5.js` and `p5.sound.js`, plus general JavaScript and built-in noise/random APIs.
+- Ripple effect was influenced by open source sketches and tutorials, but implemented manually in this project.
+- References were adapted for educational purposes and all linked in this document.
+
+## Running the Sketch
+
+You can open the `index.html` file directly in a browser to run the project.
+
+To clone and view via local server:
+```bash
+git clone https://github.com/your-username/ascii-cow-perlin.git
+cd ascii-cow-perlin
+open index.html
