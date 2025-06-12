@@ -93,7 +93,7 @@ function createGrainTexture(graphics) {
 // 🐄 牛的绘制逻辑 (使用您喜欢的 drawRoughPolygon)
 function drawCow() {
   const animSpeed = 0.05;
-  const animAmplitude = 0.06;
+  const animAmplitude = 0.1;
   let swingAngle = sin(frameCount * animSpeed) * animAmplitude;
   const pivot1 = createVector(610, 370), pivot2 = createVector(500, 395), pivot3 = createVector(350, 440), pivot4 = createVector(160, 420);
 
@@ -105,7 +105,7 @@ function drawCow() {
   drawRoughPolygon(horn1, 0, '#FFFFFF', 10);
   drawRoughPolygon(horn2, 0, '#F5F5F5', 10);
 }
-/* don't need the mouse crz i want to focus on perlin noise more than user input
+// don't need the mouse crz i want to focus on perlin noise more than user input
 function mousePressed() {
   ripples.push({
     x: mouseX,
@@ -113,7 +113,7 @@ function mousePressed() {
     startTime: time
   });
 }
-*/
+
 
 // 您喜欢的“粗糙轮廓”函数
 function drawRoughPolygon(polygonVertices, jitter = 8, fillCol = '#dbb277', stepDiv = 14) {
@@ -193,7 +193,8 @@ function updateWaterRipple() {
       let offsetX = map(n, 0, 1, -30, 30);
       let offsetY = map(n, 0, 1, -30, 30);
 
-      // 鼠标周围扰动（可选，不添加也可以）
+      // mouse interavtive don't needed
+      
       let dx1 = x - mouseX;
       let dy1 = y - mouseY;
       let distSq = dx1 * dx1 + dy1 * dy1;
@@ -213,7 +214,7 @@ function updateWaterRipple() {
         let waveRadius = (time - ripple.startTime) * 250;
         let waveWidth = 50;
         if (abs(d - waveRadius) < waveWidth) {
-          let strength = map(abs(d - waveRadius), 0, waveWidth, 12, 0);
+          let strength = map(abs(d - waveRadius), 0, waveWidth, 30, 0);
           let angle = atan2(dy, dx);
           offsetX += cos(angle) * strength;
           offsetY += sin(angle) * strength;
