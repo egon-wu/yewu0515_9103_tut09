@@ -1,32 +1,32 @@
 // =================================================================
-// 全局变量和常量
+// Global Variables and Constants
 // =================================================================
 const BASE_WIDTH = 840;
 const BASE_HEIGHT = 620;
 
-let bg; // 用于存储静态油画背景的图层
-let textureOverlay; // 🆕 新增：用于存储画布纹理的图层
+let bg; // Layer to store the static impasto background
+let textureOverlay; // 🆕 New: Layer to store the canvas grain texture
 
-// 牛的身体部位顶点数组
+// Vertex arrays for cow body parts
 let body, leg1, leg2, leg3, leg4, horn1, horn2;
 
 
 // =================================================================
-// 核心设置函数 (setup)
+// Core Setup Function (setup)
 // =================================================================
 function setup() {
   createCanvas(BASE_WIDTH, BASE_HEIGHT);
   updateCanvasScale();
 
-  // 1. 创建静态的油画背景
+  // 1. Create a static impasto-style background
   bg = createGraphics(width, height); 
   createImpastoBG(); 
 
-  // 2. 🆕 创建一次性的、程序化的画布纹理
+  // 2. 🆕 Generate a one-time procedural grain texture
   textureOverlay = createGraphics(width, height);
   createGrainTexture(textureOverlay);
 
-  // 在 setup 中一次性初始化牛的顶点数据
+  // Initialize cow body part vertices in setup
   body = [
     createVector(146,313), createVector(259,236), createVector(367,220),
     createVector(461,153), createVector(622,126), createVector(642,115),
@@ -46,47 +46,47 @@ function setup() {
 }
 
 // =================================================================
-// 核心绘制循环 (draw)
+// Core Drawing Loop (draw)
 // =================================================================
 function draw() {
-  // 1. 将预先生成好的背景图层画出来
+  // 1. Render the pre-generated background layer
   image(bg, 0, 0, width, height);
   
-  // 2. 绘制会动的牛
+  // 2. Draw the animated cow
   drawCow();
   
-  // 3. 🆕 在所有内容都画完之后，用混合模式叠加纹理层
+  // 3. 🆕 Overlay the texture layer using blend mode after everything is drawn
   push();
-  blendMode(OVERLAY); // 尝试 OVERLAY, SOFT_LIGHT, 或者 MULTIPLY
+  blendMode(OVERLAY); // Try OVERLAY, SOFT_LIGHT, or MULTIPLY
   image(textureOverlay, 0, 0);
-  blendMode(BLEND); // 重置混合模式，避免影响下一帧
+  blendMode(BLEND); // Reset blend mode to avoid affecting the next frame
   pop();
 }
 
 
 // =================================================================
-// 绘图辅助函数
+// Drawing Utility Functions
 // =================================================================
 
-// 🆕 新增：创建程序化噪点纹理的函数
+// 🆕 New: Function to generate procedural grain texture
 function createGrainTexture(graphics) {
-  const grainAmount = 100000; // 噪点的数量
+  const grainAmount = 100000; // Number of noise dots
   graphics.noStroke();
   for (let i = 0; i < grainAmount; i++) {
     const x = random(width);
     const y = random(height);
-    // 画一个非常小的、半透明的白色或黑色噪点
+    // Draw a tiny semi-transparent white or black dot
     const alpha = random(0, 15);
     if (random() > 0.5) {
-      graphics.fill(255, alpha); // 白色噪点
+      graphics.fill(255, alpha); // White dot
     } else {
-      graphics.fill(0, alpha);   // 黑色噪点
+      graphics.fill(0, alpha);   // Black dot
     }
     graphics.rect(x, y, 1, 1);
   }
 }
 
-// 🐄 牛的绘制逻辑 (使用您喜欢的 drawRoughPolygon)
+// 🐄 Cow drawing logic (using your preferred drawRoughPolygon)
 function drawCow() {
   const animSpeed = 0.05;
   const animAmplitude = 0.06;
@@ -103,7 +103,7 @@ function drawCow() {
 }
 
 
-// 您喜欢的“粗糙轮廓”函数
+// Your preferred "rough polygon" function
 function drawRoughPolygon(polygonVertices, jitter = 8, fillCol = '#dbb277', stepDiv = 14) {
   if (polygonVertices.length === 0) return;
   
@@ -132,7 +132,7 @@ function drawRoughPolygon(polygonVertices, jitter = 8, fillCol = '#dbb277', step
 }
 
 
-// 程序化油画背景生成函数
+// Procedural impasto-style background generation
 const noiseScale = 0.003;
 const colours = [ "#fccace", "#bcbdf5", "#f5ce20", "#f56020", "#003366", "#6699cc"];
 function createImpastoBG() {
@@ -157,7 +157,7 @@ function createImpastoBG() {
 }
 
 
-// 浏览器窗口响应式调整
+// Responsive scaling for canvas in browser window
 function updateCanvasScale() { 
     const scaleFactor = Math.min(windowWidth / BASE_WIDTH, windowHeight / BASE_HEIGHT) * 0.95; 
     const canvasEl = document.querySelector('canvas');
