@@ -1,6 +1,7 @@
-# ASCII Cow Animation — Perlin Noise & Randomness Version
 # Creative coding major project
+# Cow Animation — Perlin Noise & Randomness Version
 # yewu0515_9103_tut09
+# SID 540890596
 
 ## Introduction
 This project is my personal reinterpretation of our group-coded ASCII cow visualization using **Perlin noise** and **randomness** as the core animation drivers. It is built with [p5.js](https://p5js.org/) and takes inspiration from the abstract artwork **"Untitled (Bull)" by Elaine de Kooning**, which I selected at the beginning of the assignment.
